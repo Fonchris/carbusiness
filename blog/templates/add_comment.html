@@ -1,0 +1,24 @@
+{% extends 'base.html' %}  <!-- Must be the first tag -->
+{% block title %} Add a new comment {% endblock%}
+
+{% block content %}
+<div class="container">
+    {% if user.is_authenticated %}
+    <h1>Add Comment.</h1><br>
+    <div class="form-group">
+        <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+       {{ form.as_p }}
+        <button class="btn btn-secondary">Post</button>
+    
+      
+    </form>
+    {% else %}
+    <h1>Please login to add a comment.</h1>
+    <a href="{% url 'signin' %}">Login</a>
+    {% endif %}
+    </div>
+
+
+</div>
+{% endblock %}

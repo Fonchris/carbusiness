@@ -1,6 +1,6 @@
 
 
-from .views import AddCommentView, FeedView, HomeView,AddPostView,ArticleDetailView,UpdatePostView,DeletePostView,LikeView,AddCategoryView,CategoryView,CategoryListView, UserPostsView, announcements, get_notifications, get_unread_count, mark_notification_read, posts,search, handle_dropdown,artsanddesign,  track_post_view
+from .views import AddCommentView, FeedView, HomeView,AddPostView,ArticleDetailView,UpdatePostView,DeletePostView,LikeView,AddCategoryView,CategoryView,CategoryListView, UserPostsView, announcements, get_notifications, get_unread_count, mark_notification_read, posts,search,   track_post_view
 from django.urls import path
 
 
@@ -17,8 +17,6 @@ urlpatterns = [
     path('categories_list/', CategoryListView, name='categories_list',),
     path('like/<int:pk>', LikeView,name="like_post"),
     path('search/', search,name="search"),
-    path('handle_dropdown/', handle_dropdown, name='handle_dropdown'),
-    path('artsanddesign/', artsanddesign, name='artsanddesign'),
     path('posts/', posts, name='posts'),
     path('announcements/', announcements, name='announcements'),
     path('user/<int:user_id>/posts/', UserPostsView.as_view(), name="user_posts"),

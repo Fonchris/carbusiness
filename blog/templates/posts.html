@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %} Blog Posts {% endblock%}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="d-inline-block">Blog Posts</h1>
+    
+    {% if user.is_authenticated %}
+        <button id="myPostsBtn" class="btn btn-primary btn-sm ms-3">My Posts</button>
+    {% endif %}
+
+    <ul class="mt-3" id="postList">
+        {% for post in object_list %}
+            <li class="post-item" data-author="{{ post.author.id }}">
+                <a href="{% url 'article-detail' post.pk %}">{{ post.title }}</a> - 
+                <a href="{% url 'category' post.category %}"> {{ post.category }} </a> - 
+                {{ post.author.first_name }} {{ post.author.last_name }}
+                
+                {% if user.is_authenticated and user.id == post.author.id %}
+                    - <small>
+                        <a href="{% url 'edit_post' post.pk %}" class="text-warning">Edit</a>
+                        <a href="{% url 'delete_post' post.pk %}" class="text-danger">Delete</a>
+                    </small>
+                {% endif %}
+                
+                <br>
+                {{ post.snippet }}
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const myPostsBtn = document.getElementById("myPostsBtn");
+        const postItems = document.querySelectorAll(".post-item");
+        let showAll = true;  // State variable to track toggle
+
+        myPostsBtn.addEventListener("click", function () {
+            const userId = "{{ user.id }}";  // Get logged-in user ID
+            if (showAll) {
+                postItems.forEach(post => {
+                    if (post.dataset.author !== userId) {
+                        post.style.display = "none"; // Hide posts not written by the user
+                    }
+                });
+                myPostsBtn.textContent = "Show All Posts"; // Toggle button text
+            } else {
+                postItems.forEach(post => {
+                    post.style.display = "block"; // Show all posts again
+                });
+                myPostsBtn.textContent = "My Posts"; // Reset button text
+            }
+            showAll = !showAll; // Toggle state
+        });
+    });
+</script>
+{% endblock %}

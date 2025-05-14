@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Search Universities</h2>
+
+    <form method="GET" class="row g-3 mb-4">
+        <div class="col-12 col-md-6 col-lg-3">
+            <label for="location" class="form-label">Location</label>
+            <input type="text" name="location" id="location" class="form-control" placeholder="Enter location" value="{{ request.GET.location }}">
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+            <label for="fee" class="form-label">Max Fee (FCFA)</label>
+            <input type="number" name="fee" id="fee" class="form-control" placeholder="Enter max fee" value="{{ request.GET.fee }}">
+        </div>
+        <div class="col-12 col-md-6 col-lg-2">
+            <label for="language" class="form-label">Language</label>
+            <input type="text" name="language" id="language" class="form-control" placeholder="Enter language" value="{{ request.GET.language }}">
+        </div>
+        <div class="col-12 col-md-6 col-lg-2">
+            <label for="program" class="form-label">Course</label>
+            <input type="text" name="program" id="program" class="form-control" placeholder="Enter course" value="{{ request.GET.program }}">
+        </div>
+        <div class="col-12 col-md-6 col-lg-2">
+            <label for="program_type" class="form-label">Program Type</label>
+            <select name="program_type" id="program_type" class="form-select">
+                <option value="" {% if not request.GET.program_type %}selected{% endif %}>Any</option>
+                <option value="bachelors" {% if request.GET.program_type == "bachelors" %}selected{% endif %}>Bachelors</option>
+                <option value="masters" {% if request.GET.program_type == "masters" %}selected{% endif %}>Masters</option>
+                <option value="phd" {% if request.GET.program_type == "phd" %}selected{% endif %}>PhD</option>
+                <option value="hnd" {% if request.GET.program_type == "hnd" %}selected{% endif %}>HND</option>
+            </select>
+        </div>
+        <div class="col-12 text-center mt-3">
+            <button type="submit" class="btn btn-primary w-100 w-md-50">Search</button>
+        </div>
+    </form>
+
+    {% if request.GET.location or request.GET.fee or request.GET.language or request.GET.program or request.GET.program_type %}
+        <h3 class="text-center mb-3">Search Results</h3>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for university in universities %}
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ university.name }}</h5>
+                            <p class="card-text"><strong>Location:</strong> {{ university.location }}</p>
+                            <p class="card-text"><strong>Fees:</strong></p>
+                            <ul class="list-unstyled ms-3">
+                                {% if university.bachelor_fee %}<li>Bachelor: FCFA {{ university.bachelor_fee }}</li>{% endif %}
+                                {% if university.master_fee %}<li>Master: FCFA {{ university.master_fee }}</li>{% endif %}
+                                {% if university.phd_fee %}<li>PhD: FCFA {{ university.phd_fee }}</li>{% endif %}
+                                {% if university.hnd_fee %}<li>HND: FCFA {{ university.hnd_fee }}</li>{% endif %}
+                            </ul>
+                            <p class="card-text"><strong>Language:</strong> {{ university.language }}</p>
+                            <p class="card-text"><strong>Coordinates:</strong> ({{ university.x_coordinate }}, {{ university.y_coordinate }})</p>
+                            <p class="card-text"><strong>Programs:</strong></p>
+                            <div class="program-list">
+                                {% if query_program_type %}
+                                    {% for category, programs in university.filtered_programs.items %}
+                                        {% for program in programs %}
+                                            <span class="program-item">{{ program }}</span>
+                                        {% endfor %}
+                                    {% endfor %}
+                                {% else %}
+                                    {% for program_type, categories in university.programs.items %}
+                                        {% for category, programs in categories.items %}
+                                            {% for program in programs|slice:":5" %}
+                                                <span class="program-item">{{ program }}</span>
+                                            {% endfor %}
+                                        {% endfor %}
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            {% if university.university_url %}
+                                <a href="{{ university.university_url }}" class="btn btn-sm btn-info mt-2" target="_blank">Visit Website</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12 text-center">
+                    <p class="text-muted">No universities found matching your criteria.</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    .program-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        max-width: 100%;
+    }
+    .program-item {
+        background-color: #f8f9fa;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 14px;
+        white-space: nowrap;
+    }
+    .card {
+        transition: transform 0.2s;
+    }
+    .card:hover {
+        transform: scale(1.02);
+    }
+    @media (max-width: 768px) {
+        .container {
+            padding: 0 15px;
+        }
+        .form-label {
+            font-size: 14px;
+        }
+        .form-control, .form-select {
+            font-size: 14px;
+            padding: 8px;
+        }
+        .btn {
+            font-size: 16px;
+            padding: 10px;
+        }
+        h2 {
+            font-size: 1.75rem;
+        }
+        h3 {
+            font-size: 1.25rem;
+        }
+        .card-body {
+            padding: 1rem;
+        }
+        .program-item {
+            font-size: 12px;
+            padding: 4px 8px;
+        }
+    }
+    @media (max-width: 576px) {
+        .btn {
+            width: 100% !important;
+        }
+        .form-control, .form-select {
+            margin-bottom: 10px;
+        }
+    }
+</style>
+
+{% endblock %}

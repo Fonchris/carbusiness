@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Complete Your Profile</h2>
+
+    <form id="profile-form" method="POST" action="{% url 'onboarding' %}" class="needs-validation" novalidate>
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="user_type" class="form-label">Select Your Status</label>
+            <select name="user_type" id="user_type" class="form-select" required>
+                <option value="" disabled selected>Select your status</option>
+                <option value="dropout">Dropout</option>
+                <option value="high_school">High School Graduate</option>
+                <option value="university">University Graduate</option>
+                <option value="worker">Worker</option>
+            </select>
+            <div class="invalid-feedback">Please select a status.</div>
+        </div>
+
+        <div id="common-questions">
+            <h3>General Questions</h3>
+            <div class="mb-3">
+                <label for="region" class="form-label">Where are you located?</label>
+                <input type="text" name="region" id="region" class="form-control" required>
+                <div class="invalid-feedback">Please enter your location.</div>
+            </div>
+            <div class="mb-3">
+                <label for="estimated_income" class="form-label">Estimated Annual Income:</label>
+                <input type="number" name="estimated_income" id="estimated_income" class="form-control" required>
+                <div class="invalid-feedback">Please enter a valid number for estimated income.</div>
+            </div>
+            <div class="mb-3">
+                <label for="fee_affordability" class="form-label">Amount you can afford for a year:</label>
+                <input type="number" name="fee_affordability" id="fee_affordability" class="form-control" required>
+                <div class="invalid-feedback">Please enter a valid number for fee affordability.</div>
+            </div>
+            <div class="mb-3">
+                <label for="dream_career" class="form-label">What’s your dream career?</label>
+                <input type="text" name="dream_career" id="dream_career" class="form-control" required>
+                <div class="invalid-feedback">Please enter your dream career.</div>
+            </div>
+            <div class="mb-3">
+                <label for="language" class="form-label">What language do you understand best french,english or both?</label>
+                <input type="text" name="language" id="language" class="form-control" required>
+                <div class="invalid-feedback">Please enter your preferred language.</div>
+            </div>
+            <div class="mb-3">
+                <label for="program_type" class="form-label">What program type do you intend taking?</label>
+                <select name="program_type" id="program_type" class="form-select" required>
+                    <option value="" disabled selected>Select program type</option>
+                    <option value="hnd">HND</option>
+                    <option value="bachelors">Bachelors</option>
+                    <option value="masters">Masters</option>
+                    <option value="phd">PhD</option>
+                </select>
+                <div class="invalid-feedback">Please select your intended program.</div>
+            </div>
+        </div>
+
+        <div id="dropout-questions" class="user-questions" style="display:none;">
+            <h3>Dropout Questions</h3>
+            <div class="mb-3">
+                <label for="learning_goal" class="form-label">What do you want to learn?</label>
+                <input type="text" name="learning_goal" id="learning_goal" class="form-control">
+            </div>
+        </div>
+
+        <div id="high_school-questions" class="user-questions" style="display:none;">
+            <h3>High School Graduate Questions</h3>
+            <div class="mb-3">
+                <label for="series" class="form-label">Which series did you do?</label>
+                <input type="text" name="series" id="series" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="best_subject" class="form-label">What subject do you understand best?</label>
+                <input type="text" name="best_subject" id="best_subject" class="form-control">
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3 w-100">Submit</button>
+    </form>
+</div>
+
+<script>
+    function toggleQuestions() {
+        document.querySelectorAll('.user-questions').forEach(section => {
+            section.style.display = 'none';
+            section.querySelectorAll('input').forEach(input => input.disabled = true);
+        });
+
+        const selectedType = document.getElementById('user_type').value;
+        if (selectedType) {
+            const section = document.getElementById(`${selectedType}-questions`);
+            if (section) {
+                section.style.display = 'block';
+                section.querySelectorAll('input').forEach(input => input.disabled = false);
+            }
+        }
+    }
+
+    document.getElementById('profile-form').addEventListener('submit', function (event) {
+        if (!this.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+        const estimatedIncome = document.getElementById('estimated_income').value;
+        const feeAffordability = document.getElementById('fee_affordability').value;
+
+        if (isNaN(estimatedIncome) || isNaN(feeAffordability)) {
+            event.preventDefault();
+            alert('Estimated Income and Fee Affordability must be numbers.');
+            return;
+        }
+
+        const requiredFields = this.querySelectorAll('[required]');
+        let isValid = true;
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                isValid = false;
+                field.classList.add('is-invalid');
+            } else {
+                field.classList.remove('is-invalid');
+            }
+        });
+
+        if (!isValid) {
+            event.preventDefault();
+            alert('Please fill out all required fields.');
+            return;
+        }
+
+        this.classList.add('was-validated');
+        document.querySelectorAll('input').forEach(input => input.disabled = false);
+    });
+
+    document.getElementById('user_type').addEventListener('change', toggleQuestions);
+</script>
+{% endblock %}

@@ -1,0 +1,553 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}My Blog{% endblock %}</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Google Meta Tag -->
+    <meta name="google-site-verification" content="MfVG7KZxeBh_TYfR-OJkB9kiqESgOaiYgKCx73e4P7M" />
+    <!-- HTML Meta Tags -->
+    <title>Orientaa: Online platform for learning, blogging, orientation and networking in Cameroon. The university recommendation system of Cameroon</title>
+    <meta name="description" content="Orientaa is an online platform (web app) that helps users find educational paths leading to university programs. It orients, guides, and counsels them while providing opportunities to learn, blog, and network with professionals from various backgrounds, It is the future of Blogging, orientation and networking in Cameroon and the ultimate university recommendatioon system For Cameroonians">
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://orientaa.com">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Orientaa: Online platform for learning, blogging, orientation and networking in Cameroon. The university recommendation system of Cameroon">
+    <meta property="og:description" content="Orientaa is an online platform (web app) that helps users find educational paths leading to university programs. It orients, guides, and counsels them while providing opportunities to learn, blog, and network with professionals from various backgrounds, It is the future of Blogging, orientation and networking in Cameroon and the ultimate university recommendatioon system For Cameroonians">
+    <meta property="og:image" content="https://opengraph.b-cdn.net/production/images/dd624f9d-1a8a-4bb9-a263-9c435b64eac2.jpg?token=jgeHqNFhRsoWNo4VjVyAq6CsfdoW_U4w8PVXhEs5jZI&height=376&width=564&expires=33276672611">
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="orientaa.com">
+    <meta property="twitter:url" content="https://orientaa.com">
+    <meta name="twitter:title" content="Orientaa: Online platform for learning, blogging, orientation and networking in Cameroon. The university recommendation system of Cameroon">
+    <meta name="twitter:description" content="Orientaa is an online platform (web app) that helps users find educational paths leading to university programs. It orients, guides, and counsels them while providing opportunities to learn, blog, and network with professionals from various backgrounds, It is the future of Blogging, orientation and networking in Cameroon and the ultimate university recommendatioon system For Cameroonians">
+    <meta name="twitter:image" content="https://opengraph.b-cdn.net/production/images/dd624f9d-1a8a-4bb9-a263-9c435b64eac2.jpg?token=jgeHqNFhRsoWNo4VjVyAq6CsfdoW_U4w8PVXhEs5jZI&height=376&width=564&expires=33276672611">
+    <style>
+        :root {
+            --font-main: 'Roboto', sans-serif;
+            --font-heading: 'Montserrat', sans-serif;
+        }
+        html, body {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background-color: #FCFBF4;
+        }
+        h1, h2, h3, h4, h5 {
+            font-family: var(--font-heading);
+        }
+        .content {
+            flex: 1;
+        }
+        footer {
+            background-color: #343a40;
+            text-align: center;
+            padding: 20px 10px;
+            color: white;
+            margin-top: 30px;
+        }
+        /* Notification Styles */
+        .alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            min-width: 300px;
+            max-width: 90%;
+        }
+        .dropdown-menu {
+            max-height: 400px;
+            overflow-y: auto;
+            width: 300px;
+            max-width: 90vw;
+        }
+        .dropdown-item {
+            white-space: normal;
+        }
+        .notification-item {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+        
+        .notification-item.unread {
+            background-color: #f8f9fa;
+        }
+        
+        .notification-content {
+            margin-bottom: 4px;
+        }
+        
+        .dropdown-item:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .text-muted {
+            color: #6c757d !important;
+            font-size: 0.875em;
+        }
+        
+        /* Footer responsive styles */
+        footer .row {
+            margin-right: 0;
+            margin-left: 0;
+        }
+        
+        footer .col-md-3 {
+            margin-bottom: 20px;
+            padding: 0 15px;
+        }
+        
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+        
+        footer a:hover {
+            color: #f8f9fa;
+            text-decoration: underline;
+        }
+        
+        footer hr {
+            margin: 15px 0;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        footer .social-buttons {
+            margin-top: 10px;
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 767px) {
+            .navbar-nav .dropdown-menu {
+                position: static;
+                float: none;
+                width: auto;
+                margin-top: 0;
+                background-color: transparent;
+                border: 0;
+                box-shadow: none;
+            }
+            
+            .nav-item.dropdown form {
+                padding: 0.5rem 1rem;
+            }
+            
+            footer h5 {
+                margin-top: 10px;
+            }
+            
+            .navbar-dark .navbar-toggler {
+                border-color: rgba(255, 255, 255, 0.5);
+            }
+            
+            #google_translate_element {
+                margin: 0.5rem 0;
+            }
+            
+            .dropdown-menu.dropdown-menu-end {
+                right: auto;
+                left: 0;
+            }
+            
+            /* Fix navbar dropdown spacing */
+            .navbar-nav .nav-item {
+                margin-bottom: 5px;
+            }
+            
+            /* User search container */
+            .container form.d-flex {
+                margin-bottom: 15px;
+            }
+            
+            /* Fix select field and button alignment */
+            .nav-item.dropdown form.d-flex {
+                flex-direction: row;
+                align-items: center;
+            }
+            
+            .nav-item.dropdown form.d-flex select {
+                max-width: 70%;
+            }
+            
+            .nav-item.dropdown form.d-flex button {
+                max-width: 30%;
+            }
+        }
+        
+        /* Medium devices (tablets) */
+        @media (min-width: 768px) and (max-width: 991px) {
+            footer .col-md-3 {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+        }
+        
+        /* Fix for Google Translate element */
+        .goog-te-gadget {
+            font-size: 0 !important;
+        }
+        
+        .goog-te-gadget .goog-te-combo {
+            margin: 0 !important;
+            padding: 3px 5px;
+            border-radius: 4px;
+        }
+        
+        .skiptranslate {
+            font-size: 0 !important;
+        }
+        
+        .skiptranslate span {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">Orienta</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'feed' %}">My Feed</a>
+                    </li>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Add
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'add_post' %}">Add BlogPost</a></li>
+                                <li><a class="dropdown-item" href="{% url 'add_category' %}">Add Category</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{% url 'announcements' %}">Announcements</a>
+                        </li>
+                      
+                        {% if category_menu %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Categories</a>
+                                <ul class="dropdown-menu">
+                                    {% for item in category_menu %}
+                                        <li><a class="dropdown-item" href="{% url 'category' item %}">{{ item }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'categories_list' %}">Blog Categories</a>
+                            </li>
+                        {% endif %}
+                        <!-- Notification Dropdown -->
+                        {% if user.is_authenticated %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Notifications <span id="notification-count" class="badge bg-danger" style="display: none;">0</span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown" id="notification-list">
+                                    <!-- Notifications will be loaded here -->
+                                </div>
+                            </li>
+                        {% endif %}
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'get_started' %}">Get Started</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{% url 'home' %}#aboutUs">About us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{% url 'contact' %}">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <div id="google_translate_element" class="nav-link"></div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'signin' %}">Login</a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'posts' %}">Posts</a>
+                    </li>
+                </ul>
+                <form class="d-flex" role="search" method="post" action="{% url 'search' %}">
+                    {% csrf_token %}
+                    <input class="form-control me-2" type="search" placeholder="Search blog" aria-label="Search" name="searched">
+                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                </form>
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item dropdown">
+                        {% if user.is_authenticated %}
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ user.first_name }} {{ user.last_name }}</a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                {% if user.profile.id %}
+                                    <li><a class="dropdown-item" href="{% url 'edit_profile_page' user.profile.id %}">Edit profile page</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'show_profile_page' user.profile.id %}">Show profile page</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'signout' %}">Signout</a></li>
+                                {% else %}
+                                    <li><a class="dropdown-item" href="{% url 'create_profile_page' %}">Create profile page</a></li>
+                                {% endif %}
+                            </ul>
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <br>
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    <strong>Message:</strong> {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-3">
+                    <h5>Orienta</h5>
+                    <p>Our mission is to properly orientate, guide and nurture fresh minds to the best career paths and fields of studies, give them the opportunity to learn, network and gain insights from industry experts, thereby equipping them with the right knowledge to conquer and excel in different life domains.</p>
+                </div>
+                <div class="col-12 col-sm-6 col-md-3">
+                    <h5>Resources and Services</h5>
+                    <a href="https://t.co/85Da3Tn8ND">Career Guidance</a><br>
+                    <a href="{% url 'posts' %}">Networking</a><br>
+                    <a href="{% url 'announcements' %}">Opportunities</a><br>
+                    <a href="https://t.co/85Da3Tn8ND">Mentorship</a><br>
+                    <a href="{% url 'announcements' %}">Career Development</a>
+                </div>
+                <div class="col-12 col-sm-6 col-md-3">
+                    <h5>More</h5>
+                    <a href="javascript:void(0);" onclick="Tawk_API.toggle();">Help</a><br>
+                    <a href="{% url 'contact' %}">Become a Partner</a><br>
+                    <a href="#">Mentorship</a>
+                </div>
+                <div class="col-12 col-sm-6 col-md-3">
+                    <h5>Contact</h5>
+                    <p><i class="fas fa-home mr-3"></i> Yaounde, Cameroon, Messasi</p>
+                    <p><i class="fas fa-envelope mr-3"></i> pemmenyif@gmail.com</p>
+                    <p><i class="fas fa-phone mr-3"></i> +237 677684842</p>
+                    <p><i class="fas fa-print mr-3"></i> +237 686 296 775</p>
+                </div>
+            </div>
+            <p class="mt-3"><a href="mailto:pemmenyi@gmail.com">pemmenyi@gmail.com</a></p>
+            <hr>
+            <div class="d-flex flex-wrap justify-content-center align-items-center">
+                <p class="me-3 mb-2">© 2025 copyright: orienta.com</p>
+                <div class="social-buttons">
+                    <a class="btn btn-outline-light btn-floating m-1" href="#" role="button"><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-outline-light btn-floating m-1" href="#" role="button"><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-outline-light btn-floating m-1" href="#" role="button"><i class="fab fa-google"></i></a>
+                    <a class="btn btn-outline-light btn-floating m-1" href="#" role="button"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script type="text/javascript">
+        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+        (function(){
+            var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+            s1.async=true;
+            s1.src='https://embed.tawk.to/6782567b49e2fd8dfe060593/1ihai3n3l';
+            s1.charset='UTF-8';
+            s1.setAttribute('crossorigin','*');
+            s0.parentNode.insertBefore(s1,s0);
+        })();
+    </script>
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Google Translate Script -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement(
+                { pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE },
+                'google_translate_element'
+            );
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <!-- Notification JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // WebSocket Setup
+            if (window.location.protocol === 'https:') {
+                var wsProtocol = 'wss://';
+            } else {
+                var wsProtocol = 'ws://';
+            }
+            const socket = new WebSocket(wsProtocol + window.location.host + '/ws/notifications/');
+
+            socket.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+                if (data.type === 'notification') {
+                    showNotification(data.notification);
+                    updateNotificationCount();
+                    loadNotifications();
+                }
+            };
+
+            socket.onclose = function(event) {
+                console.error('WebSocket closed unexpectedly');
+            };
+
+            socket.onerror = function(error) {
+                console.error('WebSocket error:', error);
+            };
+
+            // Show Toast Notification
+            function showNotification(notification) {
+                const notificationDiv = document.createElement('div');
+                notificationDiv.className = 'alert alert-info alert-dismissible fade show';
+                notificationDiv.style.position = 'fixed';
+                notificationDiv.style.top = '20px';
+                notificationDiv.style.right = '20px';
+                notificationDiv.style.zIndex = '1000';
+                notificationDiv.style.minWidth = '300px';
+                notificationDiv.style.maxWidth = '90%';
+                
+                // Format the timestamp
+                const timestamp = new Date(notification.timestamp);
+                const formattedTime = timestamp.toLocaleString();
+                
+                notificationDiv.innerHTML = `
+                    <strong>${notification.actor}</strong> ${notification.verb} ${notification.target || 'you'}.
+                    <small class="text-muted d-block">${formattedTime}</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                `;
+                document.body.appendChild(notificationDiv);
+                setTimeout(() => notificationDiv.remove(), 5000);
+            }
+
+            // Update Unread Notification Count
+            function updateNotificationCount() {
+                fetch('/notifications/unread_count/')
+                    .then(response => response.json())
+                    .then(data => {
+                        const badge = document.getElementById('notification-count');
+                        if (badge) {
+                            badge.textContent = data.unread_count;
+                            badge.style.display = data.unread_count > 0 ? 'inline' : 'none';
+                        }
+                    })
+                    .catch(error => console.error('Error fetching unread count:', error));
+            }
+
+            // Load Notifications in Dropdown
+            function loadNotifications() {
+                fetch('/notifications/')
+                    .then(response => response.json())
+                    .then(data => {
+                        const notificationList = document.getElementById('notification-list');
+                        if (!notificationList) return;
+                        
+                        notificationList.innerHTML = '';
+                        if (data.notifications.length === 0) {
+                            const item = document.createElement('a');
+                            item.className = 'dropdown-item';
+                            item.innerHTML = 'No notifications';
+                            notificationList.appendChild(item);
+                        } else {
+                            data.notifications.forEach(notification => {
+                                const item = document.createElement('a');
+                                item.className = 'dropdown-item';
+                                if (notification.verb === 'follow') {
+                                    item.href = `/user/${notification.actor_id}/posts/`;
+                                } else if (notification.target_id) {
+                                    item.href = `/article/${notification.target_id}/`;
+                                } else {
+                                    item.href = '#';
+                                }
+                                
+                                // Format the timestamp
+                                const timestamp = new Date(notification.timestamp);
+                                const formattedTime = timestamp.toLocaleString();
+                                
+                                item.innerHTML = `
+                                    <div class="notification-item ${!notification.is_read ? 'unread' : ''}">
+                                        <div class="notification-content">
+                                            <strong>${notification.actor}</strong> ${notification.verb} ${notification.target || 'you'}.
+                                        </div>
+                                        <small class="text-muted">${formattedTime}</small>
+                                    </div>
+                                `;
+                                
+                                if (!notification.is_read) {
+                                    item.style.backgroundColor = '#f8f9fa';
+                                }
+                                
+                                item.onclick = function(e) {
+                                    if (!notification.is_read) {
+                                        e.preventDefault();
+                                        fetch(`/notifications/${notification.id}/read/`, {
+                                            method: 'POST',
+                                            headers: {
+                                                'X-CSRFToken': getCookie('csrftoken'),
+                                            },
+                                        })
+                                        .then(response => response.json())
+                                        .then(() => {
+                                            updateNotificationCount();
+                                            loadNotifications();
+                                            window.location.href = item.href;
+                                        })
+                                        .catch(error => console.error('Error marking notification as read:', error));
+                                    }
+                                };
+                                notificationList.appendChild(item);
+                            });
+                        }
+                    })
+                    .catch(error => console.error('Error loading notifications:', error));
+            }
+
+            // Get CSRF Token for POST Requests
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+
+            // Initialize Notifications
+            if (document.getElementById('notificationDropdown')) {
+                loadNotifications();
+                updateNotificationCount();
+            }
+        });
+    </script>
+</body>
+</html>

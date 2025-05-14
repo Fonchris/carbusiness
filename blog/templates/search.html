@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Search{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>You searched for: {{ searched }}</h2>
+    <ul>
+        {% if posts %}
+            {% for post in posts %}
+                <li>
+                    <a href="{% url 'article-detail' post.pk %}">{{ post.title }}</a> - {{ post.snippet }}
+                </li>
+            {% endfor %}
+        {% else %}
+            <li>No results found.</li>
+        {% endif %}
+    </ul>
+</div>
+{% endblock %}

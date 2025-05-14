@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Your Personalized Feed{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Your Feed</h1>
+    
+    <div class="row">
+        <div class="col-md-8">
+            {% if posts %}
+                {% for post in posts %}
+                    <div class="card mb-4 shadow-sm">
+                        {% if post.header_image %}
+                            <img src="{{ post.header_image.url }}" class="card-img-top" alt="{{ post.title }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ post.title }}</h5>
+                            <p class="card-text">{{ post.snippet }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a href="{% url 'article-detail' post.pk %}" class="btn btn-sm btn-outline-primary">Read More</a>
+                                </div>
+                                <small class="text-muted">
+                                    <a href="{% url 'show_profile_page' post.author.profile.id %}">{{ post.author.username }}</a> • 
+                                    {{ post.post_date }}
+                                </small>
+                            </div>
+                            <div class="mt-2">
+                                <form action="{% url 'like_post' post.pk %}" method="POST" class="d-inline">
+                                    {% csrf_token %}
+                                    {% if post.id in liked_post_ids %}
+                                        <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-sm btn-danger">
+                                            <i class="fas fa-heart"></i> {{ post.total_likes }}
+                                        </button>
+                                    {% else %}
+                                        <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-sm btn-outline-danger">
+                                            <i class="far fa-heart"></i> {{ post.total_likes }}
+                                        </button>
+                                    {% endif %}
+                                </form>
+                                <a href="{% url 'article-detail' post.pk %}#comments" class="btn btn-sm btn-outline-secondary">
+                                    <i class="far fa-comment"></i> {{ post.comments.count }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-info">
+                    <p>No recommended posts yet. Try following more users or exploring different categories!</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Discover Categories</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        {% for category in category_menu %}
+                            <li class="list-group-item">
+                                <a href="{% url 'category' category %}">{{ category }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h5>People to Follow</h5>
+                </div>
+                <div class="card-body">
+                    <!-- This would require additional logic to suggest users -->
+                    <p>Coming soon!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

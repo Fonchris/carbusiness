@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Optional for responsiveness -->
+    <title>Categories List</title>
+</head>
+<body>
+    {% extends 'base.html' %}  <!-- Corrected: removed extra space -->
+    {% block content %}
+    <div class="container">
+        <h1> Categories List</h1>
+
+        
+        {% for item in category_menu_list %}
+            <li><a class="dropdown-item" href="{% url 'category' item %}">{{item}}</a></li>
+           
+            {% endfor %}
+      
+        </div>
+    {% endblock %}
+</body>
+</html>

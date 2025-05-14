@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Announcements{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<div class="container">
+    <h2 class="my-4">Announcements</h2>
+    <div class="row">
+        {% for announcement in announcements %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    {% if announcement.image %}
+                        <img src="{{ announcement.image.url }}" class="card-img-top" alt="{{ announcement.title }}" style="max-height: 200px; object-fit: cover;">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ announcement.title }}</h5>
+                        <p class="card-text">{{ announcement.content }}</p>
+                        <p><strong>Date:</strong> {{ announcement.announcement_date }}</p>
+                        <p><strong>Location:</strong> {{ announcement.location|default:"N/A" }}</p>
+                        {% if announcement.time %}
+                            <p><strong>Time:</strong> {{ announcement.time }}</p>
+                        {% endif %}
+                        {% if announcement.registration_link %}
+                            <a href="{{ announcement.registration_link }}" class="btn btn-primary" target="_blank">Register Here</a>
+                        {% endif %}
+                        <small class="text-muted">Posted on: {{ announcement.created_at }}</small>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{% endblock %}

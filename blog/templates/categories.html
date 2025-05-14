@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Optional for responsiveness -->
+    <title> Categories</title>
+</head>
+<body>
+    {% extends 'base.html' %}  <!-- Corrected: removed extra space -->
+    {% block content %}
+    <div class="container">
+        <h1> {{cats}} Categories</h1>
+
+        {% if category_posts %}
+        <ul>
+            {% for post in category_posts %}
+            <li>
+                <a href="{% url 'article-detail' post.pk %}">{{ post.title }}</a> -{{post.category}}-
+                {{ post.author.first_name }} {{ post.author.last_name }}
+                {% if user.is_authenticated %}
+                {% if user.id == post.author.id %}
+                  -<small><a href="{% url 'edit_post' post.pk %}">Edit</a>
+                  <a href="{% url 'delete_post' post.pk %}">Delete</a>
+                {% endif %}
+                {% endif %}
+            </small>  <br>
+                {{ post.body|slice:":200"|safe }}
+            </li>
+            {% endfor %}
+        </ul>
+      {% else %}
+      <p>No posts in this category.</p>
+      {% endif %}
+        </div>
+    {% endblock %}
+</body>
+</html>

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Search{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>You searched for: {{ searched }}</h2>
+    <ul class="list-group">
+        {% if profiles %}
+            {% for profile in profiles %}
+                <li class="list-group-item">
+                    <a href="{% url 'show_profile_page' profile.id %}">
+                        {{ profile.user.username }}
+                        {% if profile.user.first_name or profile.user.last_name %}
+                            ({{ profile.user.first_name }} {{ profile.user.last_name }})
+                        {% endif %}
+                    </a>
+                </li>
+            {% endfor %}
+        {% else %}
+            <li class="list-group-item">No results found.</li>
+        {% endif %}
+    </ul>
+</div>
+<div class="container" style="margin-top: 3%;">
+    <a class="nav-link" href="{% url 'user_list' %}">Discover  other Users</a>
+</div>
+{% endblock %}

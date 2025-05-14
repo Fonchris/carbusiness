@@ -1,0 +1,31 @@
+{% extends 'base.html' %}  
+{% block title %} Edit Profile {% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Edit Profile</h1>
+    <div class="card">
+        <div class="card-body">
+            {% if user.is_authenticated %}
+                {% if user.id == profile.user.id %}
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {{ form.as_p }}
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update Profile</button>
+                    </form>
+                {% else %}
+                    <div class="alert alert-danger" role="alert">
+                        You are not authorized to edit this profile.
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="alert alert-warning" role="alert">
+                    You're not allowed here and you know it.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

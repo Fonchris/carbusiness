@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %} {% comment %} load widget tweaks {% endcomment %}
+{% block title %} Contact us {% endblock %}
+
+{% block content %}
+<section class="contact-section" id="contact" style="padding: 1rem 0;">
+    <h2 class="heading" style="margin-bottom: 3rem; text-align: center; color: #191515;">Contact<span style="color: #007bff;"> Us!</span></h2>
+    <div style="max-width: 40rem; margin: 1rem auto; padding: 2rem; background-color: #fff; border-radius: .8rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);">
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label for="{{ form.name.id_for_label }}" class="form-label">Full Name</label>
+                {% render_field form.name class="form-control" %}
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.email.id_for_label }}" class="form-label">Email Address</label>
+                {% render_field form.email class="form-control" %}
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.phone.id_for_label }}" class="form-label">Mobile Number</label>
+                {% render_field form.phone class="form-control" %}
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.subject.id_for_label }}" class="form-label">Email Subject</label>
+                {% render_field form.subject class="form-control" %}
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.message.id_for_label }}" class="form-label">Your Message</label>
+                {% render_field form.message class="form-control" %}
+            </div>
+
+            <input type="submit" value="Send Message" class="btn btn-primary" style="margin-top: 2rem;">
+        </form>
+    </div>
+</section>
+{% endblock %}

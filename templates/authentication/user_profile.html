@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ page_user.user.username }}'s Profile {% endblock %}
+
+{% block content %}
+<div class="container">
+
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        <strong>Message:</strong> {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+
+    <h2>User Profile</h2>
+   
+    <br>
+    <div class="card mb-3">
+        <div class="row g-0">
+          <div class="col-md-2">
+            {% if page_user.profile_pic %}
+              <img src="{{ page_user.profile_pic.url }}" style="width: 100%; height: auto; max-width: 200px;">
+            {% else %}
+              <img src="{% static '/images/default_profile_pic.webp' %}" style="width: 100%; height: auto; max-width: 200px;"> <!-- Use a default image -->
+            {% endif %}
+          </div>
+          <div class="col-md-10">
+            <div class="card-body">
+              <h5 class="card-title">
+                {{ page_user.user.first_name }} {{ page_user.user.last_name }}
+                <small class="text-muted">@{{ page_user.user.username }}</small>
+              </h5>
+              
+              <!-- Follow/Unfollow buttons -->
+              {% if user.is_authenticated and user.id != page_user.user.id %}
+                {% if is_following %}
+                  <form action="{% url 'unfollow_user' page_user.user.id %}" method="POST" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-danger btn-sm">Unfollow</button>
+                  </form>
+                {% elif is_followed_by %}
+                  <form action="{% url 'follow_user' page_user.user.id %}" method="POST" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary btn-sm">Follow Back</button>
+                  </form>
+                {% else %}
+                  <form action="{% url 'follow_user' page_user.user.id %}" method="POST" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary btn-sm">Follow</button>
+                  </form>
+                {% endif %}
+              {% endif %}
+              
+              <!-- Followers and Following counts -->
+              <div class="mt-2">
+                <a href="{% url 'followers_list' page_user.user.id %}" class="mr-3">
+                  {{ followers_count }} Followers
+                </a>
+                <a href="{% url 'following_list' page_user.user.id %}" style="margin-left: 1%; margin-right: 1%;">
+                  {{ following_count }} Following
+                </a>
+                <a href="{% url 'user_posts' page_user.user.id %}">
+                  {% with post_count=page_user.user.post_set.count %}
+                    {{ post_count }} Post{{ post_count|pluralize }}
+                  {% endwith %}
+                </a>
+              </div>
+
+              
+              <p class="card-text mt-3">{{ page_user.bio }}</p>
+              <p class="small text-muted">
+                
+                {% if page_user.website_url %}
+                  <a href="{{ page_user.website_url }}">Website</a> |
+                {% endif %}
+                {% if page_user.linkedin_url %}
+                  <a href="{{ page_user.linkedin_url }}">LinkedIn</a> |
+                {% endif %}
+                {% if page_user.facebook_url %}
+                  <a href="{{ page_user.facebook_url }}">Facebook</a> |
+                {% endif %}
+                {% if page_user.instagram_url %}
+                  <a href="{{ page_user.instagram_url }}">Instagram</a> |
+                {% endif %}
+                {% if page_user.twitter_url %}
+                  <a href="{{ page_user.twitter_url }}">Twitter</a> |
+                {% endif %}
+                {% if page_user.pinterest_url %}
+                  <a href="{{ page_user.pinterest_url }}">Pinterest</a>
+                {% endif %}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+</div>
+{% endblock %}

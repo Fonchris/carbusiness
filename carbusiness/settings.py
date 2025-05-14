@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +28,43 @@ SECRET_KEY = 'django-insecure-w*(u^&9l6k6sxz*0yex4j3qd9()mtym)ysj_e^8r$kl!5w5nt*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+load_dotenv()
+BASE_DIR = Path(__file__).resolve().parent.parent
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+}
+
+MEDIA_URL = '/media/'
+BASE_URL = 'http://127.0.0.1:8000'
+
+
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.environ.get('SECRET_KEY') 
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
+
+#ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', "localhost").split()
+ALLOWED_HOSTS = [
+    'carbusiness.onrender.com',
+    'www.carbusiness.onrender.com',
+    'localhost',
+    '127.0.0.1',
+]
+CSRF_TRUSTED_ORIGINS = [
+    'https://carbusiness.onrender.com',
+    'http://carbusiness.onrender.com',
+]
 
 
 # Application definition
@@ -37,7 +76,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'blog'
+    'widget_tweaks',
+    'blog',
+    'members',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +96,7 @@ ROOT_URLCONF = 'carbusiness.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # Make sure this path is correct
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -69,6 +110,14 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'carbusiness.wsgi.application'
+ASGI_APPLICATION = 'orientaUpdateDjango.asgi.application'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
+
 
 
 # Database
@@ -80,6 +129,26 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# import dj_database_url
+
+# DATABASES = {
+#     'default': {
+#         # 'ENGINE': 'django.db.backends.sqlite3',
+#         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'railway',
+#         'USER': 'postgres',
+#         'PASSWORD':os.environ.get('database_password'),
+#         'HOST': 'gondola.proxy.rlwy.net',
+#         'PORT': '57532',
+#         'OPTIONS': {
+#             'sslmode': 'require',  # Use SSL for the connection
+#         },
+        
+#     },
+  
+# }
 
 
 # Password validation
@@ -122,3 +191,12 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Session settings
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_SECURE = False  # Set to True in production with HTTPS
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax'  # Helps with CSRF protection
+
+# Make sure your SECRET_KEY is properly set and not exposed
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-w*(u^&9l6k6sxz*0yex4j3qd9()mtym)ysj_e^8r$kl!5w5nt*')

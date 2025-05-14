@@ -1,0 +1,27 @@
+{% extends 'base.html' %}  <!-- Must be the first tag -->
+{% block title %} Edit new blog post {% endblock%}
+
+{% block content %}
+<div class="container">
+     {% if user.is_authenticated %}
+     {% if user.id == post.author.id %}
+    <h1>Edit Blog Post.</h1><br>
+    <div class="form-group">
+        <form method="post">
+        {% csrf_token %}
+        {{form.media }}
+        {{ form.as_p}}
+        
+        <button class="btn btn-secondary">Update</button>
+
+    </form>
+    {% else %}
+    You are not allowed here, and you know it
+    </div>
+    {% endif %}
+
+
+    {% endif %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Signup{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="card shadow-lg" style="max-width: 500px; width: 100%;">
+        <div class="card-body">
+            <h3 class="card-title text-center mb-4">Signup</h3>
+
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                <strong>Message:</strong> {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endfor %}
+
+            <form method="post" action="{% url 'signup' %}" id="signupForm">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control {% if errors.username %}is-invalid{% endif %}" 
+                           id="username" name="username" value="{{ form_data.username|default:'' }}" required>
+                    <div class="invalid-feedback">{{ errors.username }}</div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">First Name</label>
+                    <input type="text" class="form-control" id="firstname" name="firstname" 
+                           value="{{ form_data.firstname|default:'' }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Last Name</label>
+                    <input type="text" class="form-control" id="lastname" name="lastname" 
+                           value="{{ form_data.lastname|default:'' }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-control {% if errors.email %}is-invalid{% endif %}" 
+                           id="email" name="email" value="{{ form_data.email|default:'' }}" required>
+                    <div class="invalid-feedback">{{ errors.email }}</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control {% if errors.password %}is-invalid{% endif %}" 
+                           id="password" name="password" required placeholder="Needs atleast 8 characters, special character and  a digit">
+                    <div class="invalid-feedback">{{ errors.password }}</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="confirmpassword" class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control {% if errors.confirmpassword %}is-invalid{% endif %}" 
+                           id="confirmpassword" name="confirmpassword" required>
+                    <div class="invalid-feedback">{{ errors.confirmpassword }}</div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Signup</button>
+            </form>
+
+            <div class="text-center mt-3">
+                <h6>Already have an account? <a href="{% url 'signin' %}">Signin</a></h6>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

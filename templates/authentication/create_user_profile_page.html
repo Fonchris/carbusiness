@@ -1,0 +1,21 @@
+{% extends 'base.html' %}  <!-- Must be the first tag -->
+{% block title %} Create A new profile {% endblock%}
+
+{% block content %}
+<div class="container">
+    <h1>Add Blog Post.</h1><br>
+    <div class="form-group">
+        <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {{ form.as_p}}
+        <button class="btn btn-secondary">Create Profile page </button>
+
+      
+    </form>
+
+    </div>
+
+
+</div>
+{% endblock %}
