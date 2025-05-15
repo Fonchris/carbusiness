@@ -1,0 +1,25 @@
+services:
+  - type: web
+    runtime: python
+    name: carbusiness
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    startCommand: daphne carbusiness.asgi:application --port $PORT --bind 0.0.0.0
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.11
+      - key: DATABASE_URL
+        fromDatabase:
+          name: carbusiness_db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DJANGO_SETTINGS_MODULE
+        value: carbusiness.settings
+      - key: WEB_CONCURRENCY
+        value: 4
+
+databases:
+  - name: carbusiness_db
+    databaseName: carbusiness
+    user: carbusiness
+

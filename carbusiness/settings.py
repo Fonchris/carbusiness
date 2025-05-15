@@ -110,7 +110,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'carbusiness.wsgi.application'
-ASGI_APPLICATION = 'orientaUpdateDjango.asgi.application'
+ASGI_APPLICATION = 'carbusiness.asgi.application'
 
 CHANNEL_LAYERS = {
     "default": {
