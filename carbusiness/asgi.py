@@ -23,4 +23,4 @@ application = ProtocolTypeRouter({
             blog.routing.websocket_urlpatterns
         )
     ),
-application = get_asgi_application()
+})
