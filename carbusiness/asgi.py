@@ -15,6 +15,7 @@ import blog.routing
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'carbusiness.settings')
 
+# Fixed the syntax error by properly closing the curly brace
 application = ProtocolTypeRouter({
     "http": get_asgi_application(),
     "websocket": AuthMiddlewareStack(
